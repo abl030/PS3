@@ -6,10 +6,11 @@
 # Name          : <your name>
 # Collaborators : <your collaborators>
 # Time spent    : <total time>
-
+import copy
 import math
 import random
 import string
+
 
 VOWELS = 'aeiou'
 CONSONANTS = 'bcdfghjklmnpqrstvwxyz'
@@ -188,8 +189,15 @@ def update_hand(hand, word):
     hand: dictionary (string -> int)    
     returns: dictionary (string -> int)
     """
+    new_hand = copy.deepcopy(hand)
+    word = word.lower()
+    for letter in word:
+        if letter in new_hand:
+            if new_hand.get(letter) > 0:
+                new_hand[letter] = new_hand.get(letter) - 1
+    return new_hand
 
-    pass  # TO DO... Remove this line when you implement this function
+
 
 
 #
