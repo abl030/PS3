@@ -96,7 +96,6 @@ def get_word_score(word, n):
     """
     # declare variables score, need access to the scrabble values.
     first_score_component = 0
-    global SCRABBLE_LETTER_VALUES
 
     # strip out the uppercase letters
     word = word.lower()
