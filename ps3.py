@@ -206,7 +206,7 @@ def update_hand(hand, word):
 def is_valid_word(word, hand, word_list):
     """
     Returns True if word is in the word_list and is entirely
-    composed of letters in the hand. Otherwise, returns False.
+     Q      ```````````````````````````````````````````````````````````````````````````````````````````````````````````````composed of letters OOin the hand. Otherwise, returns False.
     Does not mutate hand or word_list.
    
     word: string
@@ -214,8 +214,26 @@ def is_valid_word(word, hand, word_list):
     word_list: list of lowercase strings
     returns: boolean
     """
+    # we need to deep copy the hand so that as we modify the dictionary we don't modify anything outside of the function
+    new_hand = copy.deepcopy(hand)
+    word = word.lower()
+    # Here we nest the tests, pretty self explanatory we are checking
+    if word in word_list:
+        for letters in word:
+            if letters in new_hand:
+                if new_hand.get(letters) > 0:
+                    new_hand[letters] = new_hand.get(letters) - 1
+                else:
+                    return False
+            else:
+                return False
+    else:
+        return False
+    #this is a super janky way to do it but it works, it will hit the return false if anything goes wrong
+    #and if nothing fails it will hit this return true statement
+    return True
 
-    pass  # TO DO... Remove this line when you implement this function
+
 
 
 #
