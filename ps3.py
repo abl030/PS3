@@ -157,13 +157,15 @@ def deal_hand(n):
     hand = {}
     num_vowels = int(math.ceil(n / 3))
 
-    for i in range(num_vowels):
+    for i in range(num_vowels) - 1:
         x = random.choice(VOWELS)
         hand[x] = hand.get(x, 0) + 1
 
     for i in range(num_vowels, n):
         x = random.choice(CONSONANTS)
         hand[x] = hand.get(x, 0) + 1
+
+    hand.update({'*': 1})
 
     return hand
 
