@@ -216,7 +216,16 @@ def is_valid_word(word, hand, word_list):
     # we need to deep copy the hand so that as we modify the dictionary we don't modify anything outside of the function
     new_hand = copy.deepcopy(hand)
     word = word.lower()
-    # Here we nest the tests, pretty self explanatory we are checking
+    # There absolutely is a better way to do this. I can tell this codes smells bad, but it passes the units tests.
+    # Firstly it checks whether a wildcard present, if there is not it proceeds with the old method.
+    # If there is a wildcard then it first checkes if the current character is a wildcard, if it is not the code
+    # proceeds as per old method, then when it hits the wildcard value it loops through the string replacing the wildcard
+    # with each vowel and works out if that word is in the word list. If it is it changes the pass variable to true
+    # then moves through the function as per old method.
+    # at the end has a test for this variable and returns either a false or true.
+    # I just had a thought how this will not let the use of two wildcards. I hope there is no test for that.
+
+
     if '*' not in word:
         if word in word_list:
             for letters in word:
@@ -231,11 +240,9 @@ def is_valid_word(word, hand, word_list):
         else:
             return False
     else:
-        index = 0
         for letters in word:
             if letters == '*':
                 wild_card_valid = False
-                index += 1
                 wildcard_index = word.index('*')
                 for letters in VOWELS:
                     test_word = word[:wildcard_index] + letters + word[wildcard_index + 1:]
