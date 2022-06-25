@@ -11,14 +11,13 @@ import math
 import random
 import string
 
-
 VOWELS = 'aeiou'
 CONSONANTS = 'bcdfghjklmnpqrstvwxyz'
 HAND_SIZE = 7
 
 SCRABBLE_LETTER_VALUES = {
     'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4, 'i': 1, 'j': 8, 'k': 5, 'l': 1, 'm': 3, 'n': 1,
-    'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10, '*':0
+    'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10, '*': 0
 }
 
 # -----------------------------------
@@ -200,8 +199,6 @@ def update_hand(hand, word):
     return new_hand
 
 
-
-
 #
 # Problem #3: Test word validity
 #
@@ -220,22 +217,51 @@ def is_valid_word(word, hand, word_list):
     new_hand = copy.deepcopy(hand)
     word = word.lower()
     # Here we nest the tests, pretty self explanatory we are checking
-    if word in word_list:
-        for letters in word:
-            if letters in new_hand:
-                if new_hand.get(letters) > 0:
-                    new_hand[letters] = new_hand.get(letters) - 1
+    if '*' not in word:
+        if word in word_list:
+            for letters in word:
+                if letters in new_hand:
+                    if new_hand.get(letters) > 0:
+                        new_hand[letters] = new_hand.get(letters) - 1
+                    else:
+                        return False
+
                 else:
                     return False
-            else:
-                return False
+        else:
+            return False
     else:
+        index = 0
+        for letters in word:
+            if letters == '*':
+                wild_card_valid = False
+                index += 1
+                wildcard_index = word.index('*')
+                for letters in VOWELS:
+                    test_word = word[:wildcard_index] + letters + word[wildcard_index + 1:]
+                    if test_word in word_list:
+                        if new_hand.get('*') > 0:
+                            new_hand['*'] = new_hand.get('*') - 1
+                            wild_card_valid = True
+
+            else:
+                if letters in new_hand:
+                    if new_hand.get(letters) > 0:
+                        new_hand[letters] = new_hand.get(letters) - 1
+                    else:
+                        return False
+
+                else:
+                    return False
+
+
+    # this is a super janky way to do it but it works, it will hit the return false if anything goes wrong
+    # and if nothing fails it will hit this return true statement
+
+    if '*' in word and not wild_card_valid:
         return False
-    #this is a super janky way to do it but it works, it will hit the return false if anything goes wrong
-    #and if nothing fails it will hit this return true statement
+
     return True
-
-
 
 
 #
