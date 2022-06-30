@@ -392,8 +392,18 @@ def substitute_hand(hand, letter):
     returns: dictionary (string -> int)
     """
     new_hand = copy.deepcopy(hand)
-
-    pass  # TO DO... Remove this line when you implement this function
+    if letter in new_hand:
+        if letter in VOWELS:
+            x = random.choice(VOWELS)
+            while x == letter:
+                x = random.choice(VOWELS)
+            new_hand[x] = new_hand.pop(letter)
+        elif letter in CONSONANTS:
+            x = random.choise(CONSONANTS)
+            while x == letter:
+                x = random.choise(CONSONANTS)
+            new_hand[x] = new_hand.pop(letter)
+    return new_hand
 
 
 def play_game(word_list):
